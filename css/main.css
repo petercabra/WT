@@ -141,3 +141,7 @@ footer :link:hover{
 textarea {
     resize: none;
 }
+.hiddenElm {display:none;}
+
+
+.showElm {display:block;}

@@ -149,7 +149,6 @@ function processArtEditFrmData(event,articleId,offset, totalCount, serverUrl){
         title: document.getElementById("title").value.trim(),
         content: document.getElementById("content").value.trim(),
         author: document.getElementById("author").value.trim(),
-
         imageLink:document.getElementById("imageLink").value.trim(),
         tags:document.getElementById("tags").value.trim()
     };
@@ -170,16 +169,9 @@ function processArtEditFrmData(event,articleId,offset, totalCount, serverUrl){
     if (!articleData.tags) {
         delete articleData.tags;
     }else{
-        articleData.tags=articleData.tags.split(","); //zmeni retazec s tagmi na pole. Oddelovac poloziek je ciarka.
-        //changes the string with tags to array. Comma is the separator
-        articleData.tags=articleData.tags.map(tag => tag.trim()); //odstráni prázdne znaky na začiatku a konci každého kľúčového slova
-        //deletes white spaces from the beginning and the end of each tag string
-
-        //newArtData.tags=newArtData.tags.map(function(tag) {return tag.trim()}); //alternativny sposob zapisu predch. prikazu
-        //an alternative way of writing the previous command
-
-        articleData.tags=articleData.tags.filter(tag => tag); //odstráni tie tagy, ktoré sú teraz len prázdne reťazce
-                                                            //removes those tags that are now just empty strings
+        articleData.tags=articleData.tags.split(",");
+        articleData.tags=articleData.tags.map(tag => tag.trim());
+        articleData.tags=articleData.tags.filter(tag => tag);
         if(articleData.tags.length==0){
             delete articleData.tags;
         }

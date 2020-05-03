@@ -2,9 +2,11 @@
 <html lang="sk">
 <head>
     <meta charset="UTF-8" />
+    <!--<meta name="google-signin-client_id" content="739447374919-iij0b3qqlnaa4eidj70m2k543n4j3675.apps.googleusercontent.com">-->
+    <meta name="google-signin-client_id" content="1067136652498-p727sb74db3lrpa7ku47q1nouq0la7l4.apps.googleusercontent.com">
     <meta name="author" content="Peter Cabra" />
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" media="print" href="print.css">
+    <link rel="stylesheet" media="print" href="css/print.css">
 
 
     <title>TechNews</title>
@@ -44,6 +46,13 @@
 
     </div>
 </header>
+
+<aside id="googleSignIn">
+    <div id="SignInButton"></div>
+    <div id="SignedIn">
+        Ste prihlásený ako <span id="userName"></span> <button onclick="signOut()">Odhlásiť sa</button>
+    </div>
+</aside>
 
 <main id="articles">
 
@@ -200,7 +209,7 @@
         Žiadne komentáre.
         {{/comments}}
         <br>
-        <div id="addCommentDiv" class="hiddenElm">
+        <div id="addCommentDiv">
             <br>
             <form id="addCommentForm">
                 <div class="addArticleHeader">
@@ -262,8 +271,8 @@
             <fieldset class="hiddenElm" id="fsetFileUploadAdd">
                 <legend>Nahranie obrázka</legend>
                 <input type="file" id="flElmAdd" name="file" accept="image/jpeg, image/png">
-                <button type="button" id="btFileUploadAdd">Odošli obrázok na server / Send image to server</button>
-                <button type="button" id="btCancelFileUploadAdd" onclick="cancelFileUpload(2)">Zruš nahrávanie / Cancel uploading</button>
+                <button type="button" id="btFileUploadAdd">Odošli obrázok na server</button>
+                <button type="button" id="btCancelFileUploadAdd" onclick="cancelFileUpload(2)">Zruš nahrávanie</button>
             </fieldset>
             <div class="artTextArea">
                 <br>
@@ -315,8 +324,8 @@
                 <legend>Image Upload</legend>
                 <input type="file" id="flElm" name="file" accept="image/jpeg, image/png"/>
                 <br />
-                <button type="button" id="btFileUpload" onclick="uploadImg('{{urlBase}}')">Send image to server</button>
-                <button type="button" id="btCancelFileUpload" onclick="cancelFileUpload(1)">Cancel uploading</button>
+                <button type="button" id="btFileUpload" onclick="uploadImg('{{urlBase}}')">Odošli obrázok na server</button>
+                <button type="button" id="btCancelFileUpload" onclick="cancelFileUpload(1)">Zrušiť nahrávanie</button>
             </fieldset>
             <div class="artTextArea">
                 <br>
@@ -361,6 +370,9 @@
 <script src="js/handleAddArticle.js"></script>
 
 <script type="module" src="js/routerInit.js"></script>
+
+<script src="js/82GoogleAccessBetter.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=startGSingIn" async defer></script>
 
 </body>
 </html>

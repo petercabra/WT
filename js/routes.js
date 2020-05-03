@@ -112,16 +112,12 @@ function fetchAndDisplayArticles(targetElm, offsetFromHash, totalCountFromHash){
     let tmpHtmlElm2CreatePreview = document.createElement("div");
     let urlQuery = "";
     const previewStringLenght=20;
-
     if (offset && totalCount){
         urlQuery=`?tag=Pjotrov&offset=${offset}&max=${articlesPerPage}`; //?tag=Pjotrov
     }else{
-        urlQuery=`?max=${articlesPerPage}`;
-    }
+        urlQuery=`?max=${articlesPerPage}`;    }
     console.log(urlQuery);
-
     const url = `${urlBase}/article${urlQuery}`;
-
     fetch(url)
         .then(response => {
             if (response.ok) {
@@ -139,7 +135,6 @@ function fetchAndDisplayArticles(targetElm, offsetFromHash, totalCountFromHash){
             console.log(totalCountFromMeta);
             console.log(offsetFromMeta);
             return Promise.resolve();
-
         })
         .then(() => {
             let prrt;
@@ -160,13 +155,10 @@ function fetchAndDisplayArticles(targetElm, offsetFromHash, totalCountFromHash){
             } else {
                 return Promise.reject(new Error(`Failed to access the content of the articles with urls ${failed}`))
             }
-
         })
         .then(responses => Promise.all(responses.map(resp => resp.json())))
         .then(articles => {
             articles.forEach((article,index) =>{
-
-                //create the content preview string and add it to the article object in the articleList
                 tmpHtmlElm2CreatePreview.innerHTML=article.content;
                 articleList[index].contentPrev=tmpHtmlElm2CreatePreview.textContent.substring(0,previewStringLenght)+"...";
                 articleList[index].totalCount=totalCountFromMeta-1;
@@ -178,7 +170,6 @@ function fetchAndDisplayArticles(targetElm, offsetFromHash, totalCountFromHash){
                     articleList[index].nextPage=offsetFromMeta+20;
                 }
                 console.log(articleList[index].totalCount,articleList[index].currPage );
-
             });
             console.log(JSON.parse(JSON.stringify(articleList)));
             return Promise.resolve()
