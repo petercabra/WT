@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    padding: 0;
+    /*background-image: url("TN_background.png");*/
+    background-color:  #e6fff2;
+    font-family: "Helvetica", serif;
+    color: #00cc66;
+}
+@media only screen and (max-width: 850px){
+    header ul {
+        display: none
+    }
+    body{
+        background-color: #e6fff2;
+    }
+}
+header {
+    max-height: 4em;
+    background-color: #00cc66;
+    padding: 0.8em 3em;
+    color: white;
+}
+header #logo {
+    margin: 0.4em 0;
+    display: inline-block;
+    height: 2em;
+}
+header #menuIts, #menuTitle {
+    display: none;
+}
+header ul {
+    position: absolute;
+    list-style: none;
+    min-width: 200px;
+    right: 3em;
+    top: 0.4em;
+}
+header ul li {
+    display: inline-block;
+}
+header ul li a {
+    padding: 10px 40px;
+    font-family: "Helvetica", serif;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+header ul li a:hover {
+    color: #00cc66;
+    background-color: white;
+    transition-duration: 0.6s;
+}
+
+menu mnHide {
+    display: none;
+}
+article {
+    background-color: white;
+    min-width: 450px;
+    width: 60%;
+    margin: 20px auto;
+    min-height: 120px;
+    padding: 1em 3em;
+    text-align: left;
+}
+article h1{
+    margin-left: 40px;
+}
+article h1:hover {
+    transition: transform .2s;
+    transform: scale(1.05,1.05);
+}
+article img {
+    width: 100%;
+    margin: 20px 0;
+
+}
+article .news {
+    max-height: 400px;
+    object-fit: cover;
+}
+article a {
+    color: #00cc66;
+}
+article .author {
+    text-align: right;
+    color: gray;
+    text-decoration: none;
+}
+article .author a {
+    color: gray;
+    text-decoration: none;
+}
+p {
+    animation-duration: 1s;
+    animation-name: slidein;
+}
+@keyframes slidein {
+    from {
+        margin-bottom: 100%;
+        width: 100%;
+    }
+
+    to {
+        margin-bottom: 0;
+        width: 100%;
+    }
+}
+
+.footer {
+    position: static;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 2rem;
+    background-color: #00cc66;
+    text-align: center;
+    color: white;
+}
+textarea {
+    resize: none;
+}

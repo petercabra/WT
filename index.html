@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Peter Cabra" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <title>TechNews</title>
+</head>
+
+<body>
+<header>
+    <a href="#welcome">
+        <img id="logo" src="img/TN.svg" alt="LOGO">
+    </a>
+    <nav>
+        <ul>
+            <li>
+                <a href="#articles/1/10">Články</a>
+            </li>
+            <li>
+                <a href="#opinions">Názor</a>
+
+            </li>
+            <li>
+                <a href="#addOpinion">Pridať názor</a>
+            </li>
+            <li>
+                <a href="#artInsert" id="insert">Pridať článok</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="menu">
+        <button id="menuTitle" onclick="displayOrHideMenu()">Menu</button>
+
+        <nav id="menuIts" class="menu mnHide">
+            <a href="#welcome">Welcome!</a>
+            <a href="#articles/1/10">Articles</a>
+            <a href="#opinions">Visitor opinions</a>
+            <a href="#addOpinion">Add your opinion</a>
+        </nav>
+
+    </div>
+</header>
+
+<main id="articles">
+
+</main>
+
+<main id="footer">
+
+</main>
+
+
+<script>window.Mustache || document.write('<script src="js/mustache.min.js"><\/script>')</script>
+
+<div class="footer">TechNews</div>
+
+<!--Templates for html, dynamically inserted by the router -->
+
+<script id="template-welcome" type="text/template">
+    <article>
+        <h2>Úvodná stránka</h2>
+        <img src="img/image.jpg" alt="uvod">
+        <h1>Web o moderných technológiach a trendoch</h1>
+    </article>
+</script>
+
+<script id="template-articles" type="text/template">
+    {{#.}}
+    <article>
+        <h2><a href="{{detailLink}}">{{title}}</a></h2>
+        {{#imageLink}}
+        <figure>
+            <img src="{{imageLink}}" alt="article figure" class="artimg"/>
+        </figure>
+        {{/imageLink}}
+        <div>
+            {{contentPrev}}
+        </div>
+        <p>
+            by {{author}}
+        </p>
+
+    </article>
+
+    {{/.}}
+</script>
+
+<script id="template-footer" type="text/template">
+    {{#.}}
+    <footer>
+        <p>
+            Displaying {{currPage}} articles of {{totalCount}} articles.s
+            <nav>
+                {{#prevPage}}
+                <a href="#articles/{{prevPage}}/{{totalCount}}"><< Previous page</a>
+                {{/prevPage}}
+                {{#nextPage}}
+                <a href="#articles/{{nextPage}}/{{totalCount}}">Next page >></a>
+                {{/nextPage}}
+            </nav>
+        </p>
+    </footer>
+    {{/.}}
+</script>
+
+
+
+<script id="template-articles-error" type="text/template">
+
+    <article>
+        <h2>Articles acquisition failed</h2>
+        <p>
+            {{errMessage}}
+        </p>
+    </article>
+
+</script>
+
+<script id="template-opinions" type="text/template">
+    <article  id="artOpinions">
+        <h2>Názory návštevníkov</h2>
+        {{#.}}
+        <section>
+            <fieldset>
+                <h3>{{name}} <i>{{created}}</i></h3>
+                <p>{{comment}}</p>
+                <p>{{willReturn}}</p>
+                <p>{{edoprava}}</p>
+                <p>{{tlac}}</p>
+            </fieldset>
+        </section>
+        <br><br>
+        {{/.}}
+        {{^.}}
+        <section>
+            Sorry, no opinions found.
+        </section>
+        {{/.}}
+    </article>
+</script>
+
+<script id="template-addOpinion" type="text/template">
+    <article  id="artOpnFrm">
+        <h2>Vyjadrite svoj názor</h2>
+
+        <form id="opnFrm" onsubmit="return processOpnFrmData(event)">
+            <label for="nameElm">Meno:</label>
+            <br>
+            <input type="text" name="login" id="nameElm" size="20" maxlength="50" placeholder="Tu vložte meno" required />
+            <br><br>
+            <label for="nameElm">Email:</label>
+            <br>
+            <input type="email" name="login" id="emailElm" size="20" maxlength="50" placeholder="example@example.com" required />
+            <br><br>
+            <label for="opnElm">Váš názor:</label>
+            <br>
+            <textarea name="comment" id="opnElm" cols="50" rows="5" placeholder="Sem napíšte svoj názor" required></textarea>
+            <br><br>
+            <input type="checkbox" id="like" />
+            <label for="like">Stránka sa mi páči.</label>
+            <br><br>
+            Obľúbená téma:
+            <br><br>
+            <input type="checkbox" id="edoprava" />
+            <label for="edoprava">SMART E-doprava</label>
+            <br><br>
+            <input type="checkbox" id="tlac" />
+            <label for="tlac">3D Tlac</label>
+            <br><br>
+            <button type="submit">Odoslať</button>
+        </form>
+    </article>
+</script>
+
+<script id="template-article" type="text/template">
+    <article>
+        <div class="articleHeader">{{title}}</div>
+        <div class="articleAuthor">{{author}}</div>
+        {{#imageLink}}
+        <figure>
+            <img src="{{imageLink}}" alt="article figure" />
+        </figure>
+        {{/imageLink}}
+        <div>{{{content}}}</div>
+        <h3>Comments</h3>
+        {{#comments}}
+        <div class="comment">
+            by <u>{{author}}</u>
+            <br>
+            {{{text}}}
+        </div>
+        {{/comments}}
+        {{^comments}}
+        Žiadne komentáre.
+        {{/comments}}
+        <br>
+        <div id="addCommentDiv" class="hiddenElm">
+            <br>
+            <form id="addCommentForm">
+                <div class="addArticleHeader">
+
+                    <h2>Pridať komentár</h2>
+                </div>
+                <div class="artAuthor">
+
+                    <label for="author">Author:</label>
+                    <br>
+                    <input type="text" name="author" id="commentAuthor" size="50" required="" title="Autor komentára, maximálna dĺžka: 100 znakov (comment author, max. length 100 characters)." maxlength="100" placeholder="napr. Ján Trieska">
+                </div>
+                <div class="artTextArea">
+                    <br>
+                    <label for="content">Article content:</label>
+                    <br>
+                    <textarea name="content" id="commentAdd" spellcheck="true" lang="sk" cols="50" rows="5" required="" title="Obsah komentára, povinná položka,  môže byť obyčajný text alebo html (Comment content, mandatory item, can be plain text or in HTML)."></textarea>
+                </div>
+                <div class="buttons">
+                    <button type="reset" id="cancelComment" class="artReset" onclick="hideCommentForm()">Cancel</button>
+                    <button type="submit" id="sendComment" class="artSubmit"><a href="{{addCommLink}}">Submit</a></button>
+                </div>
+            </form>
+        </div>
+        <p>
+            Keywords:
+            {{tags}}
+        </p>
+    </article>
+    <footer>
+        <a href="{{backLink}}" class="linkAsButton">Back</a>
+        <a href="{{editLink}}" class="linkAsButton">Edit</a>
+        <a href="{{deleteLink}}" class="linkAsButton">Delete</a>
+        <a href="#menu" class="linkAsButton">Up to the menu</a>
+    </footer>
+</script>
+
+<script id="template-addArticle" type="text/template">
+    <article class="addArtDiv">
+        <h2>Tvorba nového článku</h2>
+        <form id="addArticleForm">
+            <div class="artAuthor">
+                <label for="author">Autor:"</label><br>
+                <input type="text" name="author" id="authorAdd" size="50" title="Autor článku, maximálna dĺžka: 100 znakov (article author, max. length 100 characters)." maxlength="100">
+            </div>
+            <div class="artTitle">
+                <br>
+                <label for="title">Názov:</label>
+                <br>
+                <input type="text" name="title" id="titleAdd" size="50" maxlength="100" pattern="\S[\S\s]*" required="" title="Názov článku, povinná položka, maximálna dĺžka: 100 znakov, prvý znak nesmie byť medzera (Article title, mandatory item, max. length: 100 characters, the first character must not be a space).">
+            </div>
+            <div class="artImgLink">
+                <br>
+                <label for="imageLink">Obrázok (url):</label>
+                <br>
+                <input type="url" name="imageLink" id="imageLinkAdd" size="50" title="URL obrázka. Maximálna dĺžka: 100 znakov (image URL, max. length 100 characters)." maxlength="100">
+            </div>
+            <br><br>
+            <fieldset class="hiddenElm" id="fsetFileUploadAdd">
+                <legend>Nahranie obrázka / Image Upload</legend>
+                <input type="file" id="flElmAdd" name="file" accept="image/jpeg, image/png">
+                <button type="button" id="btFileUploadAdd">Odošli obrázok na server / Send image to server</button>
+                <button type="button" id="btCancelFileUploadAdd" onclick="cancelFileUpload(2)">Zruš nahrávanie / Cancel uploading</button>
+            </fieldset>
+            <div class="artTextArea">
+                <br>
+                <label for="content">Text článku / Article content:</label><br>
+                <textarea name="content" id="contentAdd" spellcheck="true" lang="sk" cols="50" rows="5" required="" title="Obsah článku, povinná položka,  môže byť obyčajný text alebo html (Article content, mandatory item, can be plain text or in HTML)."></textarea>
+            </div>
+            <div class="artKeywords">
+                <br>
+                <label for="tags">Kľúčové slová / Keywords:</label>
+                <br>
+                <input type="text" name="tags" id="tagsAdd" size="50" title="Zoznam kľúčových slov oddelených čiarkou (Keyword list, comma separated)." placeholder="napr. dedina, dráma / e.g. village, drama">
+            </div>
+            <br>
+            <div class="buttons">
+                <button type="reset" class="artReset">Reset</button>
+                <button type="submit" class="artSubmit">Pridaj článok </button>
+            </div>
+        </form>
+    </article>
+</script>
+
+<script id="template-article-form" type="text/template">
+    <article class="addArtDiv">
+        <form id="articleForm" onsubmit="return {{formSubmitCall}}">
+            <div class="addArticleHeader">
+                {{formTitle}}
+            </div>
+            <div class="artAuthor">
+                <br>
+                <label for="author">Author:</label>
+                <br>
+                <input type="text" name="author" id="author" value="{{author}}" size="50" title="Article author, max. length 100 characters." maxlength="100" placeholder="e.g. Ján Trieska" />
+            </div>
+            <br>
+            <div class="artTitle">
+                <label for="title">Title:</label>
+                <br>
+                <input type="text" name="title" id="title" value="{{title}}" size="50"  maxlength="100" pattern="\S[\S\s]*" required title="Article title, mandatory item, max. length: 100 characters, the first character must not be a space." placeholder="e.g. My story." />
+            </div>
+            <div class="artImgLink">
+                <br>
+                <label for="imageLink">Image (url):</label>
+                <br>
+                <input type="url" name="imageLink" id="imageLink" value="{{imageLink}}" size="50" title="Image URL, max. length 100 characters." maxlength="100"/>
+            </div>
+            <br>
+            <br>
+            <fieldset>
+                <legend>Image Upload</legend>
+                <input type="file" id="flElm" name="file" accept="image/jpeg, image/png"/>
+                <br />
+                <button type="button" id="btFileUpload" onclick="uploadImg('{{urlBase}}')">Send image to server</button>
+                <button type="button" id="btCancelFileUpload" onclick="cancelFileUpload(1)">Cancel uploading</button>
+            </fieldset>
+            <div class="artTextArea">
+                <br>
+                <label for="content">Article content:</label>
+                <br>
+                <textarea
+                        name="content" id="content" spellcheck="true" lang="sk"
+                        cols="50" rows="5" required
+                        title="Article content, mandatory item, can be plain text or in HTML.">{{content}}</textarea>
+            </div>
+            <div class="artKeywords">
+                <br>
+                <label for="tags">Keywords:</label>
+                <br>
+                <input  type="text" name="tags" id="tags" value="{{tags}}" size="50"
+                        title="Keyword list, comma separated." placeholder="e.g. village, drama" />
+            </div>
+            <br>
+            <div class="buttons">
+                <button type="reset" class="artReset">Reset Form</button>
+                <button type="submit" class="artSubmit">{{submitBtTitle}}</button>
+            </div>
+        </form>
+    </article>
+    <footer>
+        <div class="buttons">
+            <a href="{{backLink}}" class="linkAsButton">Back</a>
+            <a href="#menu" class="linkAsButton">Up to the menu</a>
+        </div>
+    </footer>
+</script>
+
+
+<script src="js/mustache.min.js"></script>
+
+<script src="js/mainMenu.js"></script>
+
+<script src="js/addOpinion.js"></script>
+
+<script src="js/handleArticleForms.js"></script>
+
+<script src="js/handleAddArticle.js"></script>
+
+<script type="module" src="js/routerInit.js"></script>
+
+</body>
+</html>
