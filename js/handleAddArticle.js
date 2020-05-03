@@ -49,7 +49,7 @@ function uploadImg(imgLinkElementId,fieldsetElementId, btShowFileUploadElementId
 
         let imgData = new FormData();     //obrazok su binarne udaje, preto FormData (pouzitelne aj pri upload-e viac suborov naraz)
                                           //and image is binary data, that's why we use FormData (it works for multiple file upload, too)
-        imgData.append("file", files[0]); //beriem len prvy obrazok, ved prvok formulara by mal povolit len jeden
+        imgData.append("file", files[0]);
                                           //takes only the first file (image)
         //2. Set up the request
         const postReqSettings = //an object wih settings of the request
@@ -74,10 +74,10 @@ function uploadImg(imgLinkElementId,fieldsetElementId, btShowFileUploadElementId
                 fieldsetElement.classList.add("hiddenElm");
             })
             .catch(error => { ////here we process all the failed promises
-                window.alert(`Image uploading failed. ${error}.`);
+
             });
     }else{
-        window.alert("Vyberte súbor s obrázkom\nPlease, choose an image file.");
+        window.alert("Vyberte súbor s obrázkom");
     }
 }
 /**

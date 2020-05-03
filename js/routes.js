@@ -9,8 +9,7 @@ export default[
         ///id of the target html element:
         target:"articles",
         //the function that returns content to be rendered to the target html element:
-        getTemplate:(targetElm) =>
-            document.getElementById(targetElm).innerHTML = document.getElementById("template-welcome").innerHTML
+        getTemplate:createHtml4Welcome
     },
     {
         hash:"commSend",
@@ -67,9 +66,22 @@ export default[
 ];
 const urlBase = "https://wt.kpi.fei.tuke.sk/api";
 const articlesPerPage = 20;
+function createHtml4Welcome(targetElm) {
+    document.getElementById(targetElm).innerHTML = document.getElementById("template-welcome").innerHTML;
+    const footersElm = document.getElementById("footer");
+    footersElm.innerHTML=Mustache.render(document.getElementById("template-footer-empty").innerHTML);
+}
+// function createHtml4Opinions(targetElm) {
+//     document.getElementById(targetElm).innerHTML = document.getElementById("template-opinions").innerHTML;
+//     const footersElm = document.getElementById("footer");
+//     footersElm.innerHTML=Mustache.render(document.getElementById("template-footer-empty").innerHTML);
+// }
 function createHtml4opinions(targetElm){
     const opinionsFromStorage=localStorage.myComments;
     let opinions=[];
+    document.getElementById(targetElm).innerHTML = document.getElementById("template-opinions").innerHTML;
+    const footersElm = document.getElementById("footer");
+    footersElm.innerHTML=Mustache.render(document.getElementById("template-footer-empty").innerHTML);
 
     if(opinionsFromStorage){
         opinions=JSON.parse(opinionsFromStorage);
@@ -102,7 +114,7 @@ function fetchAndDisplayArticles(targetElm, offsetFromHash, totalCountFromHash){
     const previewStringLenght=20;
 
     if (offset && totalCount){
-        urlQuery=`?&offset=${offset}&max=${articlesPerPage}`; //?tag=Pjotrov
+        urlQuery=`?tag=Pjotrov&offset=${offset}&max=${articlesPerPage}`; //?tag=Pjotrov
     }else{
         urlQuery=`?max=${articlesPerPage}`;
     }
@@ -186,8 +198,8 @@ function fetchAndDisplayArticles(targetElm, offsetFromHash, totalCountFromHash){
 
 function renderArticles(targetElm, articles) {
     const articlesElm = document.getElementById("articles");
-    const footersElm = document.getElementById("footer");
     articlesElm.innerHTML=Mustache.render(document.getElementById("template-articles").innerHTML, articles);
+    const footersElm = document.getElementById("footer");
     footersElm.innerHTML=Mustache.render(document.getElementById("template-footer").innerHTML, articles[19]);
 
 }

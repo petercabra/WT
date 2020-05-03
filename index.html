@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="author" content="Peter Cabra" />
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" media="print" href="print.css">
+
 
     <title>TechNews</title>
 </head>
@@ -54,8 +56,6 @@
 
 <script>window.Mustache || document.write('<script src="js/mustache.min.js"><\/script>')</script>
 
-<div class="footer">TechNews</div>
-
 <!--Templates for html, dynamically inserted by the router -->
 
 <script id="template-welcome" type="text/template">
@@ -91,20 +91,24 @@
     {{#.}}
     <footer>
         <p>
-            Displaying {{currPage}} articles of {{totalCount}} articles.s
+            Zobrazuje sa {{currPage}} článkov z {{totalCount}}
             <nav>
                 {{#prevPage}}
-                <a href="#articles/{{prevPage}}/{{totalCount}}"><< Previous page</a>
+                <a href="#articles/{{prevPage}}/{{totalCount}}">  << Predošlá strana  </a>
                 {{/prevPage}}
                 {{#nextPage}}
-                <a href="#articles/{{nextPage}}/{{totalCount}}">Next page >></a>
+                <a href="#articles/{{nextPage}}/{{totalCount}}">Následujúca strana >></a>
                 {{/nextPage}}
             </nav>
         </p>
     </footer>
     {{/.}}
 </script>
-
+<script id="template-footer-empty" type="text/template">
+    <footer>
+        Tech News
+    </footer>
+</script>
 
 
 <script id="template-articles-error" type="text/template">
@@ -239,7 +243,7 @@
         <h2>Tvorba nového článku</h2>
         <form id="addArticleForm">
             <div class="artAuthor">
-                <label for="author">Autor:"</label><br>
+                <label for="author">Autor:</label><br>
                 <input type="text" name="author" id="authorAdd" size="50" title="Autor článku, maximálna dĺžka: 100 znakov (article author, max. length 100 characters)." maxlength="100">
             </div>
             <div class="artTitle">
@@ -256,21 +260,21 @@
             </div>
             <br><br>
             <fieldset class="hiddenElm" id="fsetFileUploadAdd">
-                <legend>Nahranie obrázka / Image Upload</legend>
+                <legend>Nahranie obrázka</legend>
                 <input type="file" id="flElmAdd" name="file" accept="image/jpeg, image/png">
                 <button type="button" id="btFileUploadAdd">Odošli obrázok na server / Send image to server</button>
                 <button type="button" id="btCancelFileUploadAdd" onclick="cancelFileUpload(2)">Zruš nahrávanie / Cancel uploading</button>
             </fieldset>
             <div class="artTextArea">
                 <br>
-                <label for="content">Text článku / Article content:</label><br>
+                <label for="content">Text článku:</label><br>
                 <textarea name="content" id="contentAdd" spellcheck="true" lang="sk" cols="50" rows="5" required="" title="Obsah článku, povinná položka,  môže byť obyčajný text alebo html (Article content, mandatory item, can be plain text or in HTML)."></textarea>
             </div>
             <div class="artKeywords">
                 <br>
-                <label for="tags">Kľúčové slová / Keywords:</label>
+                <label for="tags">Kľúčové slová:</label>
                 <br>
-                <input type="text" name="tags" id="tagsAdd" size="50" title="Zoznam kľúčových slov oddelených čiarkou (Keyword list, comma separated)." placeholder="napr. dedina, dráma / e.g. village, drama">
+                <input type="text" name="tags" id="tagsAdd" size="50" title="Zoznam kľúčových slov oddelených čiarkou (Keyword list, comma separated)." placeholder="napr. e-skate, Tesla">
             </div>
             <br>
             <div class="buttons">
